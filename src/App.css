@@ -1,0 +1,49 @@
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+  background-color: rgb(145, 141, 141);
+}
+
+.home-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+}
+
+.title {
+  border-bottom: 1px solid black;
+}
+
+.graph-wrap {
+  padding: 30px;
+}
+
+.single-graph {
+  padding: 30px;
+  border-bottom: 1px solid rgb(185, 181, 181);
+}
+
+.description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.description p {
+  text-align: center;
+}
+
+.custom-tooltip {
+  background-color: rgb(226, 222, 164);
+  border: 1px solid rgb(90, 86, 86);
+  box-shadow: 1px 1px 1px 1px rgb(214, 206, 206);
+  padding: 15px;
+  border-radius: 20px;
+  text-align: center;
+}

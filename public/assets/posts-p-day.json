@@ -1,0 +1,30 @@
+[
+    {
+        "post_weekday": 1,
+        "count": 38
+    },
+    {
+        "post_weekday": 2,
+        "count": 9
+    },
+    {
+        "post_weekday": 3,
+        "count": 12
+    },
+    {
+        "post_weekday": 4,
+        "count": 8
+    },
+    {
+        "post_weekday": 5,
+        "count": 20
+    },
+    {
+        "post_weekday": 6,
+        "count": 50
+    },
+    {
+        "post_weekday": 7,
+        "count": 32
+    }
+]

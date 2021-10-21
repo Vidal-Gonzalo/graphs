@@ -1,0 +1,30 @@
+[
+    {
+        "comment_weekday": 1,
+        "count": 38
+    },
+    {
+        "comment_weekday": 2,
+        "count": 9
+    },
+    {
+        "comment_weekday": 3,
+        "count": 2
+    },
+    {
+        "comment_weekday": 4,
+        "count": 38
+    },
+    {
+        "comment_weekday": 5,
+        "count": 9
+    },
+    {
+        "comment_weekday": 6,
+        "count": 2
+    },
+    {
+        "comment_weekday": 7,
+        "count": 38
+    }
+]
