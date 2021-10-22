@@ -13,6 +13,10 @@ import {
 
 function TimeLine(props) {
   const { since_str, until_str, interval } = props;
+
+  const current = moment(since_str);
+  const until = moment(until_str);
+
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -23,17 +27,16 @@ function TimeLine(props) {
 
   function adapterFunction(data) {
     const step = interval === "hour" ? "hours" : "days";
-    const current = moment(since_str);
-    const until = moment(until_str);
     const result = [];
-
+    data = data.map(d => { d.date = moment(d.date); return d;});
     while (current <= until) {
-      let item = { date: current, count: null };
-      let dataItem = data.filter((i) => i.date === current); //Acá está comparando un string con un objeto moment
-      result.push(dataItem ? dataItem : item);
+      let dataItem = data.filter((i) => current.isSame(i.date)); 
+      result.push(dataItem.length > 0  ? dataItem[0] : { date: current.clone(), count: null });
       current.add(1, step);
+      
     }
-    return result; //Devuelve los valores de diferencia que hay entre los parámetros pero los devuelve vacíos
+    return result.map(i => {i.date = i.date.format(); return i })
+    
   }
 
   return (
