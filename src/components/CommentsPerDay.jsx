@@ -12,13 +12,13 @@ import {
 } from "recharts";
 
 const barColors = [
-  "#4682B4",
-  "#00FF7F",
-  "#D2B48C",
-  "#FF6347",
-  "#40E0D0",
-  "#EE82EE",
-  "#FFFF00",
+  "#FFD6A5",
+  "#CAFFBF",
+  "#9BF6FF",
+  "#A0C4FF",
+  "#BDB2FF",
+  "#FFC6FF",
+  "#FFADAD",
 ];
 
 const barLabels = [
@@ -58,10 +58,16 @@ const getIntroOfPage = (label) => {
 
 const CustomizedAxisTick = (props) => {
   const { x, y, payload } = props;
-
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={16} textAnchor="middle" fill="#666">
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="middle"
+        className="labels"
+        fill="#666"
+      >
         {barLabels[payload.index]}
       </text>
     </g>
@@ -103,7 +109,7 @@ function CommentsPerDay(props) {
           <ResponsiveContainer width="99%" aspect={3}>
             <BarChart width={150} height={40} data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <Bar dataKey="count" fill="#8884d8">
+              <Bar dataKey="count" barSize={70} fill="#8884d8">
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={barColors[index % 20]} />
                 ))}

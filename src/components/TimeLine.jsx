@@ -8,6 +8,7 @@ import {
   YAxis,
   CartesianGrid,
   Legend,
+  Tooltip,
   ResponsiveContainer,
 } from "recharts";
 
@@ -25,18 +26,38 @@ function TimeLine(props) {
     });
   }, []);
 
+  const CustomizedAxisTick = (props) => {
+    const { x, y, payload } = props;
+
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={16} textAnchor="middle" fill="#666">
+          {payload.value}
+        </text>
+      </g>
+    );
+  };
+
   function adapterFunction(data) {
     const step = interval === "hour" ? "hours" : "days";
     const result = [];
-    data = data.map(d => { d.date = moment(d.date); return d;});
+    data = data.map((d) => {
+      d.date = moment(d.date);
+      return d;
+    });
     while (current <= until) {
-      let dataItem = data.filter((i) => current.isSame(i.date)); 
-      result.push(dataItem.length > 0  ? dataItem[0] : { date: current.clone(), count: null });
+      let dataItem = data.filter((i) => current.isSame(i.date));
+      result.push(
+        dataItem.length > 0
+          ? dataItem[0]
+          : { date: current.clone(), count: null }
+      );
       current.add(1, step);
-      
     }
-    return result.map(i => {i.date = i.date.format(); return i })
-    
+    return result.map((i) => {
+      i.date = i.date.format("MM-Do-YY");
+      return i;
+    });
   }
 
   return (
@@ -55,10 +76,20 @@ function TimeLine(props) {
           <ResponsiveContainer width="99%" aspect={3}>
             <LineChart width="100%" height={200} data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" interval="preserveStartEnd" />
+              <XAxis
+                dataKey="date"
+                interval="preserveStartEnd"
+                tick={<CustomizedAxisTick />}
+              />
               <YAxis interval="preserveStartEnd" />
               <Legend />
-              <Line type="monotone" dataKey="count" stroke="#8884d8" />
+              <Tooltip />
+              <Line
+                name="Comentarios"
+                type="monotone"
+                dataKey="count"
+                stroke="#8884d8"
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>

@@ -10,7 +10,6 @@ function App() {
       <div className="container">
         <div className="home-wrap">
           <div className="graph-wrap">
-            <h1 className="title">Gráficos</h1>
             <div className="single-graph">
               <CommentsPerDay
                 title="Comentarios por día"
@@ -34,8 +33,8 @@ function App() {
             </div>
             <div className="single-graph">
               <TimeLine
-                since_str="2021-05-21T00:00:00Z"
-                until_str="2021-05-26T00:00:00Z"
+                since_str="2021-05-20T00:00:00Z"
+                until_str="2021-05-27T00:00:00Z"
                 interval="days"
               />
             </div>
