@@ -20,12 +20,41 @@ function TimeLine(props) {
 
   const [chartData, setChartData] = useState([]);
 
+  //Helpers
+
   useEffect(() => {
+    function adapterFunction(data) {
+      const step = interval === "hour" ? "hours" : "days";
+      const result = [];
+      data = data.map((d) => {
+        d.date = moment(d.date);
+        return d;
+      });
+      while (current <= until) {
+        let dataItem = data.filter((i) => current.isSame(i.date));
+        result.push(
+          dataItem.length > 0
+            ? dataItem[0]
+            : { date: current.clone(), count: null }
+        );
+        current.add(1, step);
+      }
+      return result.map((i) => {
+        if (step === "days") {
+          i.date = i.date.format("MMM-DD-YY");
+        } else {
+          i.date = i.date.format("DD-hh:mm");
+        }
+        return i;
+      });
+    }
+
     Axios.get("assets/comments-count-by-interval.json").then((response) => {
       setChartData(adapterFunction(response.data));
     });
-  }, []);
+  }, [current, interval, until]);
 
+  //Customized content
   const CustomizedAxisTick = (props) => {
     const { x, y, payload } = props;
 
@@ -44,32 +73,6 @@ function TimeLine(props) {
       </g>
     );
   };
-
-  function adapterFunction(data) {
-    const step = interval === "hour" ? "hours" : "days";
-    const result = [];
-    data = data.map((d) => {
-      d.date = moment(d.date);
-      return d;
-    });
-    while (current <= until) {
-      let dataItem = data.filter((i) => current.isSame(i.date));
-      result.push(
-        dataItem.length > 0
-          ? dataItem[0]
-          : { date: current.clone(), count: null }
-      );
-      current.add(1, step);
-    }
-    return result.map((i) => {
-      if (step === "days") {
-        i.date = i.date.format("MMM-DD-YY");
-      } else {
-        i.date = i.date.format("DD-hh:mm");
-      }
-      return i;
-    });
-  }
 
   return (
     <>
@@ -97,7 +100,7 @@ function TimeLine(props) {
                 name="Comentarios"
                 type="monotone"
                 dataKey="count"
-                stroke="#8884d8"
+                stroke="#9a64e0"
                 strokeWidth={2}
               />
             </LineChart>

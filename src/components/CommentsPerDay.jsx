@@ -8,7 +8,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -67,8 +66,8 @@ const CustomizedAxisTick = (props) => {
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    payload[0].color = "#ffac81";
-    payload[1].color = "#efe9ae";
+    payload[0].color = "#BDB2FF";
+    payload[1].color = "#FFC6FF";
     return (
       <div className="custom-tooltip">
         <p className="intro">{getIntroOfPage(label)}</p>
@@ -110,12 +109,12 @@ function CommentsPerDay(props) {
               <CartesianGrid strokeDasharray="3 3" />
               <Bar dataKey="count" barSize={30}>
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill="#ffac81" />
+                  <Cell key={`cell-${index}`} fill="#BDB2FF" />
                 ))}
               </Bar>
               <Bar dataKey="shares" barSize={30}>
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill="#efe9ae" />
+                  <Cell key={`cell-${index}`} fill="#FFC6FF" />
                 ))}
               </Bar>
               <YAxis />

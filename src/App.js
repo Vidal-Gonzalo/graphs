@@ -39,7 +39,7 @@ function App() {
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
               quam voluptatibus "
                 since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-28T00:00:00Z"
+                until_str="2021-05-25T00:00:00Z"
                 interval="days"
               />
             </div>

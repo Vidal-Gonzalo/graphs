@@ -40,6 +40,12 @@
   font-weight: bold;
 }
 
+.labels-feelings {
+  font-weight: bold;
+  font-size: 13px;
+  text-align: center;
+}
+
 .timeLineLabels {
   font-size: 11px;
   transform: rotate(-25deg);
@@ -67,15 +73,15 @@
 
 .word-cloud {
   width: 100%;
+  border-bottom: 1px solid rgb(185, 181, 181);
 }
 
 .word-cloud-wrap {
   margin: 20px 50px 50px 50px;
   padding: 20px;
   border-radius: 20px;
-  border: 1px solid rgb(184, 177, 177);
-  background-color: #2e4358;
-  box-shadow: 5px 7px 7px 10px #ccc;
+  border: 1px solid #ccc;
+  box-shadow: 7px 7px 13px 5px #ccc;
 }
 
 .word-data-wrap {
@@ -97,9 +103,4 @@
 .word-data p {
   color: #fad19e;
   margin-top: 5px;
-}
-
-.square-legend {
-  width: 10px;
-  height: 10px;
 }

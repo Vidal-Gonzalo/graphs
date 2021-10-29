@@ -17,8 +17,9 @@ function FormatPost(props) {
     });
   }, []);
 
+  //Chart's colors
   function fillColorFunction(data) {
-    const colors = ["#8884d8", "#83a6ed", "#8dd1e1"];
+    const colors = ["#ffc658", "#d0ed57", "#a4de6c"];
     data = data.map((item, index) => ({
       type: item.type,
       count: item.count,
@@ -27,6 +28,27 @@ function FormatPost(props) {
     return data;
   }
 
+  //Helpers - 1
+  function customLabel(data) {
+    let text = "";
+    switch (data) {
+      case "text":
+        text = "Textos";
+        break;
+      case "image":
+        text = "Imágenes";
+        break;
+      case "video":
+        text = "Videos";
+        break;
+      default:
+        text = "";
+        break;
+    }
+    return text;
+  }
+
+  //Helpers - 2
   function getPercentage(data, value) {
     let total = 0;
     for (let i = 0; i < data.length; i++) {
@@ -37,14 +59,21 @@ function FormatPost(props) {
     return percentage + "%";
   }
 
+  //Customized content - 1
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
-          <p className="desc">
-            Porcentaje: {getPercentage(chartData, payload[0].value)}
+          <p>
+            Porcentaje:{" "}
+            <span style={{ color: payload[0].payload.fill }}>
+              {getPercentage(chartData, payload[0].value)}
+            </span>
             <br />
-            Publicaciones: {payload[0].value}
+            {customLabel(payload[0].payload.type)}:{" "}
+            <span style={{ color: payload[0].payload.fill }}>
+              {payload[0].value}
+            </span>
           </p>
         </div>
       );
@@ -52,11 +81,24 @@ function FormatPost(props) {
     return null;
   };
 
-  const style = {
-    top: "50%",
-    right: 0,
-    transform: "translate(0, -50%)",
-    lineHeight: "24px",
+  //Customized content - 2
+  const RenderLegend = ({ payload }) => {
+    return (
+      <ul>
+        {payload.map((entry, index) => (
+          <li
+            key={`item-${index}`}
+            style={{
+              color: entry.payload.fill,
+              fontSize: "22px",
+              fontWeight: "bold",
+            }}
+          >
+            {customLabel(entry.payload.type)}
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -69,10 +111,12 @@ function FormatPost(props) {
         <ResponsiveContainer width="99%" aspect={3}>
           <RadialBarChart
             cx="50%"
-            cy="50%"
+            cy="70%"
             innerRadius="50%"
             outerRadius="100%"
             barSize={25}
+            startAngle={180}
+            endAngle={0}
             data={chartData}
           >
             <RadialBar
@@ -81,6 +125,14 @@ function FormatPost(props) {
               background
               clockWise
               dataKey="count"
+            />
+            <Legend
+              width={220}
+              height={120}
+              layout="vertical"
+              verticalAlign="middle"
+              align="right"
+              content={<RenderLegend />}
             />
             <Tooltip content={<CustomTooltip />} />
           </RadialBarChart>
