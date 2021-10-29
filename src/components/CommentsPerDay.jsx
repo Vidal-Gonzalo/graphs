@@ -8,18 +8,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
-
-const barColors = [
-  "#FFD6A5",
-  "#CAFFBF",
-  "#9BF6FF",
-  "#A0C4FF",
-  "#BDB2FF",
-  "#FFC6FF",
-  "#FFADAD",
-];
 
 const barLabels = [
   "Lunes",
@@ -76,11 +67,19 @@ const CustomizedAxisTick = (props) => {
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
+    payload[0].color = "#ffac81";
+    payload[1].color = "#efe9ae";
     return (
       <div className="custom-tooltip">
         <p className="intro">{getIntroOfPage(label)}</p>
         <p className="desc">
-          Han habido <strong>{payload[0].value}</strong> comentarios.
+          <span style={{ color: payload[0].color }}>
+            <strong>{payload[0].value} comentarios</strong>
+          </span>{" "}
+          <br />
+          <span style={{ color: payload[1].color }}>
+            <strong>{payload[1].value} compartidos</strong>
+          </span>
         </p>
       </div>
     );
@@ -109,9 +108,14 @@ function CommentsPerDay(props) {
           <ResponsiveContainer width="99%" aspect={3}>
             <BarChart width={150} height={40} data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <Bar dataKey="count" barSize={70} fill="#8884d8">
+              <Bar dataKey="count" barSize={30}>
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={barColors[index % 20]} />
+                  <Cell key={`cell-${index}`} fill="#ffac81" />
+                ))}
+              </Bar>
+              <Bar dataKey="shares" barSize={30}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill="#efe9ae" />
                 ))}
               </Bar>
               <YAxis />

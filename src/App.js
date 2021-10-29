@@ -3,6 +3,8 @@ import CommentsPerDay from "./components/CommentsPerDay";
 import PostsPerDay from "./components/PostsPerDay";
 import SentimentPerComment from "./components/CommentsPerFeeling";
 import TimeLine from "./components/TimeLine";
+import WordsCloud from "./components/WordCloud";
+import FormatPost from "./components/FormatPost";
 
 function App() {
   return (
@@ -33,9 +35,25 @@ function App() {
             </div>
             <div className="single-graph">
               <TimeLine
+                title="Línea del tiempo"
+                description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus "
                 since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-27T00:00:00Z"
+                until_str="2021-05-28T00:00:00Z"
                 interval="days"
+              />
+            </div>
+            <div className="word-cloud">
+              <WordsCloud
+                title="Nube de palabras"
+                description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis quam voluptatibus"
+              />
+            </div>
+            <div className="single-graph">
+              <FormatPost
+                title="Formato de publicaciones"
+                description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus "
               />
             </div>
           </div>

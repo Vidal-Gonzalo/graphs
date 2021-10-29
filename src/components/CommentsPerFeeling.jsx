@@ -34,11 +34,11 @@ const CustomizedAxisTick = (props) => {
   if (payload.index === 0)
     return (
       <svg
-        x={x - 12}
-        y={y + 2}
+        x={x - 15}
+        y={y - 2}
         xmlns="http://www.w3.org/2000/svg"
-        width="25"
-        height="25"
+        width="30"
+        height="28"
         fill="currentColor"
         className="bi bi-emoji-smile"
         viewBox="0 0 16 16"
@@ -51,11 +51,11 @@ const CustomizedAxisTick = (props) => {
   if (payload.index === 1)
     return (
       <svg
-        x={x - 12.3}
-        y={y + 2}
+        x={x - 15}
+        y={y - 2}
         xmlns="http://www.w3.org/2000/svg"
-        width="25"
-        height="25"
+        width="30"
+        height="28"
         fill="currentColor"
         className="bi bi-emoji-neutral"
         viewBox="0 0 16 16"
@@ -68,11 +68,11 @@ const CustomizedAxisTick = (props) => {
   if (payload.index === 2)
     return (
       <svg
-        x={x - 12}
-        y={y + 2}
+        x={x - 15}
+        y={y - 2}
         xmlns="http://www.w3.org/2000/svg"
-        width="25"
-        height="25"
+        width="30"
+        height="28"
         fill="currentColor"
         className="bi bi-emoji-frown"
         viewBox="0 0 16 16"

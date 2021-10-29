@@ -31,7 +31,14 @@ function TimeLine(props) {
 
     return (
       <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor="middle" fill="#666">
+        <text
+          x={0}
+          y={0}
+          dy={16}
+          className="timeLineLabels"
+          textAnchor="middle"
+          fill="#666"
+        >
           {payload.value}
         </text>
       </g>
@@ -55,7 +62,11 @@ function TimeLine(props) {
       current.add(1, step);
     }
     return result.map((i) => {
-      i.date = i.date.format("MM-Do-YY");
+      if (step === "days") {
+        i.date = i.date.format("MMM-DD-YY");
+      } else {
+        i.date = i.date.format("DD-hh:mm");
+      }
       return i;
     });
   }
@@ -64,13 +75,8 @@ function TimeLine(props) {
     <>
       <div className="row">
         <div className="description">
-          <h3>Línea de tiempo de comentarios por intervalo</h3>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
-            quam voluptatibus cumque in illo quo labore laborum voluptate, dicta
-            expedita nesciunt magni consectetur dolor nemo corrupti sunt
-            doloremque, est quaerat?
-          </p>
+          <h3>{props.title}</h3>
+          <p>{props.description}</p>
         </div>
         <div className="wrap-chart">
           <ResponsiveContainer width="99%" aspect={3}>
@@ -82,13 +88,17 @@ function TimeLine(props) {
                 tick={<CustomizedAxisTick />}
               />
               <YAxis interval="preserveStartEnd" />
-              <Legend />
+              <Legend
+                wrapperStyle={{ position: "relative" }}
+                iconType="plainlane"
+              />
               <Tooltip />
               <Line
                 name="Comentarios"
                 type="monotone"
                 dataKey="count"
                 stroke="#8884d8"
+                strokeWidth={2}
               />
             </LineChart>
           </ResponsiveContainer>

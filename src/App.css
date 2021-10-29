@@ -40,6 +40,11 @@
   font-weight: bold;
 }
 
+.timeLineLabels {
+  font-size: 11px;
+  transform: rotate(-25deg);
+}
+
 .description {
   display: flex;
   justify-content: center;
@@ -57,4 +62,44 @@
   padding: 15px;
   border-radius: 20px;
   text-align: center;
+  font-weight: bold;
+}
+
+.word-cloud {
+  width: 100%;
+}
+
+.word-cloud-wrap {
+  margin: 20px 50px 50px 50px;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgb(184, 177, 177);
+  background-color: #2e4358;
+  box-shadow: 5px 7px 7px 10px #ccc;
+}
+
+.word-data-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.word-data {
+  width: 30%;
+  font-weight: bold;
+  display: flex;
+  border-radius: 20px;
+  justify-content: center;
+  padding: 15px;
+  background-color: #2e4358;
+  font-size: 20px;
+}
+
+.word-data p {
+  color: #fad19e;
+  margin-top: 5px;
+}
+
+.square-legend {
+  width: 10px;
+  height: 10px;
 }
