@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function TimeLine(props) {
+function CommentsTimeLine(props) {
   const { since_str, until_str, interval } = props;
 
   const current = moment(since_str);
@@ -111,4 +111,4 @@ function TimeLine(props) {
   );
 }
 
-export default TimeLine;
+export default CommentsTimeLine;

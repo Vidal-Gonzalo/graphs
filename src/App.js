@@ -2,9 +2,11 @@ import "./App.css";
 import CommentsPerDay from "./components/CommentsPerDay";
 import PostsPerDay from "./components/PostsPerDay";
 import SentimentPerComment from "./components/CommentsPerFeeling";
-import TimeLine from "./components/TimeLine";
+import CommentsTimeLine from "./components/CommentsTimeLine";
 import WordsCloud from "./components/WordCloud";
 import FormatPost from "./components/FormatPost";
+import FollowersTimeLine from "./components/FollowersTimeLine";
+import CommentsAndShares from "./components/CommentsAndShares";
 
 function App() {
   return (
@@ -34,8 +36,8 @@ function App() {
               />
             </div>
             <div className="single-graph">
-              <TimeLine
-                title="Línea del tiempo"
+              <CommentsTimeLine
+                title="Cantidad total de comentarios"
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
               quam voluptatibus "
                 since_str="2021-05-20T00:00:00Z"
@@ -54,6 +56,26 @@ function App() {
                 title="Formato de publicaciones"
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
               quam voluptatibus "
+              />
+            </div>
+            <div className="single-graph">
+              <FollowersTimeLine
+                title="Cantidad total de seguidores"
+                description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus "
+                since_str="2021-05-20T00:00:00Z"
+                until_str="2021-05-25T00:00:00Z"
+                interval="days"
+              />
+            </div>
+            <div className="single-graph">
+              <CommentsAndShares
+                title="Volumen comentarios y compartidos"
+                description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus "
+                since_str="2021-05-20T00:00:00Z"
+                until_str="2021-05-25T00:00:00Z"
+                interval="days"
               />
             </div>
           </div>
