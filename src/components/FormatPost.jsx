@@ -19,6 +19,7 @@ function FormatPost(props) {
 
   //Chart's colors
   function fillColorFunction(data) {
+    console.log(data)
     const colors = ["#ffc658", "#d0ed57", "#a4de6c"];
     data = data.map((item, index) => ({
       type: item.type,

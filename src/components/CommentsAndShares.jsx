@@ -11,6 +11,7 @@ import {
   CartesianGrid,
   Legend,
   Tooltip,
+  Cell,
   ResponsiveContainer,
 } from "recharts";
 
@@ -23,77 +24,114 @@ function CommentsAndShares(props) {
   const until = moment(until_str);
 
   const [chartData, setChartData] = useState([]);
-  const [groupedByDate, setGroupedByDate] = useState([]);
-  const [pieData, setPieData] = useState([{ "date": 2, "comments": 3, "likes": 3 }])
+  const [pieData, setPieData] = useState([{ "interaction": "Me gusta", "value": 1 }, { "interaction": "Compartidos", "value": 1 }, { "interaction": "Comentarios", "value": 1 }])
 
   useEffect(() => {
+    //Helper
+    function adapterFunction(data) {
+      const step = interval === "hour" ? "hours" : "days";
+      const result = [];
+      data = data.map((d) => {
+        d.date = moment(d.date);
+        return d;
+      });
+      while (current <= until) {
+        let dataItem = data.filter((i) => current.isSame(i.date));
+        result.push(
+          dataItem.length > 0
+            ? dataItem[0]
+            : { date: current.clone(), count: null }
+        );
+        current.add(1, step);
+      }
+      return result.map((i) => {
+        if (step === "days") {
+          i.date = i.date.format("YYYY-MM-DD");
+        } else {
+          i.date = i.date.format("DD-hh:mm");
+        }
+        return i;
+      });
+    }
+
+
     //Fetching data
     Axios.get("assets/comments-and-shares.json").then((response) => {
       setChartData(adapterFunction(response.data));
     })
-    // loadData()
-    console.log(pieData)
   }, []);
 
-  // async function loadData() {
-  //   const response = await fetch("assets/comments-and-shares.json").then(response => response.json())
-  //   setGroupedByDate(groupDataByDate(adapterFunction(response)));
-  // }
 
-  // function groupDataByDate(rawList) {
-  //   const dataByDate = {}
-  //   for (const i in rawList) {
-  //     const item = rawList[i];
-  //     const currentValues = dataByDate[item.date];
-  //     if (currentValues === undefined) {
-  //       dataByDate[item.date] = {};
-  //       dataByDate[item.date].total = item.comments + item.shares;
-  //       dataByDate[item.date].shares = item.shares;
-  //       dataByDate[item.date].comments = item.comments;
-  //     } else {
-  //       dataByDate[item.date].total = currentValues.total + (item.comments + item.shares);
-  //       dataByDate[item.date].shares = currentValues.shares + item.shares;
-  //       dataByDate[item.date].comments = currentValues.comments + item.comments;
-  //     }
-  //   }
-  //   return dataByDate
-  // }
 
-  //Helper
-  function adapterFunction(data) {
-    const step = interval === "hour" ? "hours" : "days";
-    const result = [];
-    data = data.map((d) => {
-      d.date = moment(d.date);
-      return d;
-    });
-    while (current <= until) {
-      let dataItem = data.filter((i) => current.isSame(i.date));
-      result.push(
-        dataItem.length > 0
-          ? dataItem[0]
-          : { date: current.clone(), count: null }
-      );
-      current.add(1, step);
-    }
-    return result.map((i) => {
-      if (step === "days") {
-        i.date = i.date.format("YYYY-MM-DD");
-      } else {
-        i.date = i.date.format("DD-hh:mm");
-      }
-      return i;
-    });
-  }
+
 
   // PieChart //
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    let x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    console.log("este es x" + x + " y este es y" + y);
+    if(x < 500){
+      x += 15
+    }
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        {(percent * 100) === 0 ? null : `${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
 
-  // LineChart //
-  //Customized tooltip
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      if (payload[0].payload.interaction === "No hubo interacción") {
+        return (
+          <div className="custom-tooltip">
+            <p className="intro">{payload[0].payload.interaction}</p>
+          </div>
+        )
+      }
+      return (
+        <div className="custom-tooltip">
+          <p className="intro">{payload[0].payload.interaction}</p>
+          <p className="desc">
+            Ha habido un total de {payload[0].value} interacciones
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  //Customize pie data
   function CustomMouseHover(payload) {
-    setPieData(payload.activePayload[0].payload);
-    console.log(pieData);
+    let data = [payload.activePayload[0].payload];
+    if (data[0].count === null) {
+      let noValue = {
+        "interaction": "No hubo interacción",
+        "value": 1
+      }
+      data.push(noValue);
+    } else {
+      let likes = {
+        "interaction": "Me gusta",
+        "value": data[0].likes
+      }
+      let shares = {
+        "interaction": "Compartidos",
+        "value": data[0].shares
+      };
+      let comments = {
+        "interaction": "Comentarios",
+        "value": data[0].comments
+      }
+      data.push(likes, shares, comments)
+    }
+
+    setPieData(data);
   }
 
 
@@ -131,12 +169,16 @@ function CommentsAndShares(props) {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
+                label={renderCustomizedLabel}
                 outerRadius={80}
                 fill="#8884d8"
-                dataKey="comments"
+                dataKey="value"
               >
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
               </Pie>
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -159,16 +201,23 @@ function CommentsAndShares(props) {
               <Line
                 name="Me gusta"
                 type="monotone"
-                dataKey="shares"
-                stroke="#F40000"
-                strokeWidth={2}
+                dataKey="likes"
+                stroke="#00C49F"
+                strokeWidth={3}
               />
               <Line
                 name="Comentarios"
                 type="monotone"
                 dataKey="comments"
-                stroke="#0A2463"
-                strokeWidth={2}
+                stroke="#FF8042"
+                strokeWidth={3}
+              />
+              <Line
+                name="Compartidos"
+                type="monotone"
+                dataKey="shares"
+                stroke="#FFBB28"
+                strokeWidth={3}
               />
             </LineChart>
           </ResponsiveContainer>
