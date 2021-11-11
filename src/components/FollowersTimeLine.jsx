@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function CommentsTimeLine(props) {
+function FollowersTimeLine(props) {
   const { since_str, until_str, interval } = props;
 
   const current = moment(since_str);
@@ -97,11 +97,32 @@ function CommentsTimeLine(props) {
               />
               <Tooltip />
               <Line
-                name="Seguidores"
+                name="Twitter"
                 type="monotone"
-                dataKey="followers"
-                stroke="#03045e"
-                strokeWidth={2}
+                dataKey="followers_tw"
+                stroke="#00acee"
+                strokeWidth={3}
+              />
+              <Line
+                name="Facebook"
+                type="monotone"
+                dataKey="followers_fb"
+                stroke="#3b5998"
+                strokeWidth={3}
+              />
+              <Line
+                name="Youtube"
+                type="monotone"
+                dataKey="followers_yt"
+                stroke="#c4302b"
+                strokeWidth={3}
+              />
+              <Line
+                name="Instagram"
+                type="monotone"
+                dataKey="followers_in"
+                stroke="#E1306C"
+                strokeWidth={3}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -111,4 +132,4 @@ function CommentsTimeLine(props) {
   );
 }
 
-export default CommentsTimeLine;
+export default FollowersTimeLine;

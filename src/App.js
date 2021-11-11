@@ -7,6 +7,8 @@ import WordsCloud from "./components/WordCloud";
 import FormatPost from "./components/FormatPost";
 import FollowersTimeLine from "./components/FollowersTimeLine";
 import CommentsAndShares from "./components/CommentsAndShares";
+import InteractionPerPost from "./components/InteractionPerPost";
+import PostsTimeLine from "./components/PostsTimeLine";
 
 function App() {
   return (
@@ -76,6 +78,21 @@ function App() {
                 since_str="2021-05-20T00:00:00Z"
                 until_str="2021-05-25T00:00:00Z"
                 interval="days"
+              />
+            </div>
+            <div className="single-graph">
+              <InteractionPerPost title="Interacción por publicación"
+                description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus" since_str="2021-05-20T00:00:00Z"
+                until_str="2021-05-25T00:00:00Z"
+                interval="days"
+              />
+            </div>
+            <div className="single-graph">
+              <PostsTimeLine title="Línea temporal de publicaciones" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus" since_str="2021-05-20T00:00:00Z"
+                until_str="2021-05-25T00:00:00Z"
+                interval="days" 
               />
             </div>
           </div>

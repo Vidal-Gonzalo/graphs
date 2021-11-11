@@ -101,7 +101,7 @@ function CommentsTimeLine(props) {
                 type="monotone"
                 dataKey="count"
                 stroke="#9a64e0"
-                strokeWidth={2}
+                strokeWidth={3}
               />
             </LineChart>
           </ResponsiveContainer>

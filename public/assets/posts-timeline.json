@@ -1,0 +1,37 @@
+[
+    {
+        "date": "2021-05-20T00:00:00Z",
+        "count_yt": 20,
+        "count_fb": 10,
+        "count_in": 55,
+        "count_tw": 22
+    },
+    {
+        "date": "2021-05-21T00:00:00Z",
+        "count_yt": 32,
+        "count_fb": 7,
+        "count_in": 22,
+        "count_tw": 33
+    },
+    {
+        "date": "2021-05-22T00:00:00Z",
+        "count_yt": 33,
+        "count_fb": 11,
+        "count_in": 12,
+        "count_tw": 44
+    },
+    {
+        "date": "2021-05-23T00:00:00Z",
+        "count_yt": 22,
+        "count_fb": 21,
+        "count_in": 11,
+        "count_tw": 33
+    },
+    {
+        "date": "2021-05-24T00:00:00Z",
+        "count_yt": 44,
+        "count_fb": 33,
+        "count_in": 22,
+        "count_tw": 22
+    }
+]
