@@ -1,4 +1,5 @@
 import "./App.css";
+import moment from "moment";
 import CommentsPerDay from "./components/CommentsPerDay";
 import PostsPerDay from "./components/PostsPerDay";
 import SentimentPerComment from "./components/CommentsPerFeeling";
@@ -9,6 +10,11 @@ import FollowersTimeLine from "./components/FollowersTimeLine";
 import CommentsAndShares from "./components/CommentsAndShares";
 import InteractionPerPost from "./components/InteractionPerPost";
 import PostsTimeLine from "./components/PostsTimeLine";
+import SocialCommentsTimeLine from "./components/SocialCommentsTimeLine";
+import CommentsClasificationTimeLine from "./components/CommentsClasificationTimeLine";
+import PostClasificationTimeLine from "./components/PostClasificationTimeLine";
+import PostClasificationBarchart from "./components/PostClasificationBarchart";
+import CommentsClasificationBarchart from "./components/CommentsClasificationBarchart";
 
 function App() {
   return (
@@ -42,8 +48,8 @@ function App() {
                 title="Cantidad total de comentarios"
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
               quam voluptatibus "
-                since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-25T00:00:00Z"
+                since_str={moment("2021-05-20T00:00:00Z")}
+                until_str={moment("2021-05-25T00:00:00Z")}
                 interval="days"
               />
             </div>
@@ -65,8 +71,8 @@ function App() {
                 title="Cantidad total de seguidores"
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
               quam voluptatibus "
-                since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-25T00:00:00Z"
+                since_str={moment("2021-05-20T00:00:00Z")}
+                until_str={moment("2021-05-25T00:00:00Z")}
                 interval="days"
               />
             </div>
@@ -75,25 +81,51 @@ function App() {
                 title="Volumen comentarios y compartidos"
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
               quam voluptatibus "
-                since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-25T00:00:00Z"
+                since_str={moment("2021-05-20T00:00:00Z")}
+                until_str={moment("2021-05-25T00:00:00Z")}
                 interval="days"
               />
             </div>
             <div className="single-graph">
               <InteractionPerPost title="Interacción por publicación"
                 description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
-              quam voluptatibus" since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-25T00:00:00Z"
+              quam voluptatibus"  since_str={moment("2021-05-20T00:00:00Z")}
+                until_str={moment("2021-05-25T00:00:00Z")}
                 interval="days"
               />
             </div>
             <div className="single-graph">
               <PostsTimeLine title="Línea temporal de publicaciones" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
-              quam voluptatibus" since_str="2021-05-20T00:00:00Z"
-                until_str="2021-05-25T00:00:00Z"
-                interval="days" 
+              quam voluptatibus" since_str={moment("2021-05-20T00:00:00Z")}
+              until_str={moment("2021-05-25T00:00:00Z")}
+                interval="days"
               />
+            </div>
+            <div className="single-graph">
+              <SocialCommentsTimeLine title="Línea temporal de comentarios en redes sociales" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus"  since_str={moment("2021-05-20T00:00:00Z")}
+              until_str={moment("2021-05-25T00:00:00Z")}
+                interval="days" />
+            </div>
+            <div className="single-graph">
+              <CommentsClasificationTimeLine title="Línea temporal de clasificación de comentarios" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus"  since_str={moment("2021-05-20T00:00:00Z")}
+                until_str={moment("2021-05-25T00:00:00Z")}
+                interval="days" />
+            </div>
+            <div className="single-graph">
+              <PostClasificationTimeLine title="Clasificación de publicaciones" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus"  since_str={moment("2021-05-20T00:00:00Z")}
+              until_str={moment("2021-05-25T00:00:00Z")}
+                interval="days" />
+            </div>
+            <div className="single-graph">
+              <PostClasificationBarchart title="Clasificación de publicaciones en barras" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus"/>
+            </div>
+            <div className="single-graph">
+              <CommentsClasificationBarchart title="Clasificación de comentarios en barras" description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+              quam voluptatibus"/>
             </div>
           </div>
         </div>

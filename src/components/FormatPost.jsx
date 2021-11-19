@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+
+import BdmApi from "../api/Bdm";
+
 import {
   RadialBar,
   RadialBarChart,
@@ -11,15 +13,23 @@ import {
 function FormatPost(props) {
   const [chartData, setChartData] = useState([]);
 
+  const { clientId, profileId } = props
+
   useEffect(() => {
-    Axios.get("assets/format-post.json").then((response) => {
+
+    async function loadChartData() {
+
+      const response = await BdmApi.getPostsPerType(clientId, profileId);
+
       setChartData(fillColorFunction(response.data));
-    });
-  }, []);
+
+    }
+
+    loadChartData();
+  }, [clientId, profileId]);
 
   //Chart's colors
   function fillColorFunction(data) {
-    console.log(data)
     const colors = ["#ffc658", "#d0ed57", "#a4de6c"];
     data = data.map((item, index) => ({
       type: item.type,
@@ -27,37 +37,6 @@ function FormatPost(props) {
       fill: colors[index],
     }));
     return data;
-  }
-
-  //Helpers - 1
-  function customLabel(data) {
-    let text = "";
-    switch (data) {
-      case "text":
-        text = "Textos";
-        break;
-      case "image":
-        text = "Imágenes";
-        break;
-      case "video":
-        text = "Videos";
-        break;
-      default:
-        text = "";
-        break;
-    }
-    return text;
-  }
-
-  //Helpers - 2
-  function getPercentage(data, value) {
-    let total = 0;
-    for (let i = 0; i < data.length; i++) {
-      let count = data[i].count;
-      total += count;
-    }
-    let percentage = Math.round((value * 100) / total);
-    return percentage + "%";
   }
 
   //Customized content - 1
@@ -82,25 +61,6 @@ function FormatPost(props) {
     return null;
   };
 
-  //Customized content - 2
-  const RenderLegend = ({ payload }) => {
-    return (
-      <ul>
-        {payload.map((entry, index) => (
-          <li
-            key={`item-${index}`}
-            style={{
-              color: entry.payload.fill,
-              fontSize: "22px",
-              fontWeight: "bold",
-            }}
-          >
-            {customLabel(entry.payload.type)}
-          </li>
-        ))}
-      </ul>
-    );
-  };
 
   return (
     <div className="row">
@@ -142,5 +102,58 @@ function FormatPost(props) {
     </div>
   );
 }
+
+//Helpers - 1
+function customLabel(data) {
+  let text = "";
+  switch (data) {
+    case "text":
+      text = "Textos";
+      break;
+    case "image":
+      text = "Imágenes";
+      break;
+    case "video":
+      text = "Videos";
+      break;
+    default:
+      text = "";
+      break;
+  }
+  return text;
+}
+
+//Helpers - 2
+function getPercentage(data, value) {
+  let total = 0;
+  for (let i = 0; i < data.length; i++) {
+    let count = data[i].count;
+    total += count;
+  }
+  let percentage = Math.round((value * 100) / total);
+  return percentage + "%";
+}
+
+
+//Customized content - 2
+const RenderLegend = ({ payload }) => {
+  return (
+    <ul>
+      {payload.map((entry, index) => (
+        <li
+          key={`item-${index}`}
+          style={{
+            color: entry.payload.fill,
+            fontSize: "22px",
+            fontWeight: "bold",
+          }}
+        >
+          {customLabel(entry.payload.type)}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 
 export default FormatPost;

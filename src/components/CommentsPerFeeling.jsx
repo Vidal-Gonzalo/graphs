@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+
+import BdmApi from "../api/Bdm";
+
 import {
   BarChart,
   Bar,
@@ -10,6 +12,52 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+
+function SentimentPerComment(props) {
+  const [chartData, setChartData] = useState([]);
+
+  const { clientId, profileId } = props
+
+  useEffect(() => {
+
+    async function loadChartData() {
+
+      const response = await BdmApi.getCommentsPerFeeling(clientId, profileId);
+
+      setChartData(response.data);
+
+    }
+
+    loadChartData();
+  }, [clientId, profileId]);
+
+  return (
+    <>
+      <div className="row">
+        <div className="description">
+          <h3>{props.title}</h3>
+          <p>{props.description}</p>
+        </div>
+        <div className="wrap-chart">
+          <ResponsiveContainer width="99%" aspect={3}>
+            <BarChart layout="vertical" data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <Bar dataKey="count" barSize={30}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={barColors[index % 20]} />
+                ))}
+              </Bar>
+              <YAxis type="category" tick={<CustomizedAxisTick />} />
+              <XAxis datakey="sentiment" type="number" />
+              <Tooltip cursor={false} content={<CustomTooltip />} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    </>
+  );
+}
 
 const barColors = ["#60D394", "#FFD97D", "#EE6055"];
 const barLabels = ["Positivo", "Neutro", "Negativo"];
@@ -61,41 +109,5 @@ const CustomTooltip = ({ active, payload, label }) => {
 
   return null;
 };
-
-function SentimentPerComment(props) {
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    Axios.get("assets/sentiment-p-comments.json").then((response) => {
-      setChartData(response.data);
-    });
-  }, []);
-
-  return (
-    <>
-      <div className="row">
-        <div className="description">
-          <h3>{props.title}</h3>
-          <p>{props.description}</p>
-        </div>
-        <div className="wrap-chart">
-          <ResponsiveContainer width="99%" aspect={3}>
-            <BarChart layout="vertical" data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <Bar dataKey="count" barSize={30}>
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={barColors[index % 20]} />
-                ))}
-              </Bar>
-              <YAxis type="category" tick={<CustomizedAxisTick />} />
-              <XAxis datakey="sentiment" type="number" />
-              <Tooltip cursor={false} content={<CustomTooltip />} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-    </>
-  );
-}
 
 export default SentimentPerComment;

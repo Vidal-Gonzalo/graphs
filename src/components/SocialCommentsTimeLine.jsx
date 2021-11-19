@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import BdmApi from '../api/Bdm';
 
@@ -11,13 +11,14 @@ import {
     Line,
     XAxis,
     YAxis,
-    CartesianGrid,
     Legend,
+    CartesianGrid,
     Tooltip,
     ResponsiveContainer,
 } from "recharts";
 
-function PostsTimeLine(props) {
+
+function SocialCommentsTimeLine(props) {
     const { clientId, profileId, since_str, until_str, interval } = props;
  
     const [chartData, setChartData] = useState([]);
@@ -26,7 +27,7 @@ function PostsTimeLine(props) {
    
     async function loadChartData(){
     
-      const response = await BdmApi.getTotalPosts(clientId, profileId, since_str, until_str, interval);
+      const response = await BdmApi.getSocialComments(clientId, profileId, since_str, until_str, interval);
     
       const groupedData = GroupDataByDate(since_str, until_str, interval, response.data);
     
@@ -38,6 +39,7 @@ function PostsTimeLine(props) {
   
     }, [clientId, profileId, since_str, until_str, interval]);
 
+   
 
     return (
         <>
@@ -48,22 +50,22 @@ function PostsTimeLine(props) {
                 </div>
                 <div className="wrap-chart">
                     <ResponsiveContainer width="99%" aspect={3}>
-                        <LineChart width="100%" height={200} data={chartData}>
+                        <LineChart width="10%" height={200} data={chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
                                 dataKey="date"
                                 interval="preserveStartEnd"
                                 tick={<CustomizedAxisTick />}
                             />
-                            <YAxis interval="preserveStartEnd" />
+                            <YAxis />
                             <Legend
                                 wrapperStyle={{ position: "relative" }}
                                 iconType="plainlane"
                             />
                             <Tooltip />
                             <Line
-                                name="Perfil"
-                                type="monotone"
+                                name="Profile"
+                                type="step"
                                 dataKey="count"
                                 stroke="#00acee"
                                 strokeWidth={3}
@@ -73,8 +75,7 @@ function PostsTimeLine(props) {
                 </div>
             </div>
         </>
-    );
+    )
 }
 
-
-export default PostsTimeLine;
+export default SocialCommentsTimeLine

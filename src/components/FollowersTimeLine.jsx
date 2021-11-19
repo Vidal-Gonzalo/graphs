@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
-import Axios from "axios";
+
+import { GroupDataByDate } from "../helpers/GroupDataByDate";
+
+import { CustomizedAxisTick } from "../helpers/CustomizedAxisTick"
+
+import BdmApi from "../api/Bdm";
+
 import {
   LineChart,
   Line,
@@ -12,67 +17,29 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+
 function FollowersTimeLine(props) {
-  const { since_str, until_str, interval } = props;
-
-  const current = moment(since_str);
-  const until = moment(until_str);
-
+  const { clientId, profileId, since_str, until_str, interval } = props;
+ 
   const [chartData, setChartData] = useState([]);
 
-  //Helpers
-
   useEffect(() => {
-    function adapterFunction(data) {
-      const step = interval === "hour" ? "hours" : "days";
-      const result = [];
-      data = data.map((d) => {
-        d.date = moment(d.date);
-        return d;
-      });
-      while (current <= until) {
-        let dataItem = data.filter((i) => current.isSame(i.date));
-        result.push(
-          dataItem.length > 0
-            ? dataItem[0]
-            : { date: current.clone(), count: null }
-        );
-        current.add(1, step);
-      }
-      return result.map((i) => {
-        if (step === "days") {
-          i.date = i.date.format("MMM-DD-YY");
-        } else {
-          i.date = i.date.format("DD-hh:mm");
-        }
-        return i;
-      });
-    }
+ 
+  async function loadChartData(){
+  
+    const response = await BdmApi.getProfileMetrics(clientId, profileId, since_str, until_str, interval);
+  
+    const groupedData = GroupDataByDate(since_str, until_str, interval, response.data);
+  
+    setChartData(groupedData);
+  
+  }
 
-    Axios.get("assets/followers-timeline.json").then((response) => {
-      setChartData(adapterFunction(response.data));
-    });
-  }, [current, interval, until]);
+    loadChartData();
 
-  //Customized content
-  const CustomizedAxisTick = (props) => {
-    const { x, y, payload } = props;
+  }, [clientId, profileId, since_str, until_str, interval]);
 
-    return (
-      <g transform={`translate(${x},${y})`}>
-        <text
-          x={0}
-          y={0}
-          dy={16}
-          className="timeLineLabels"
-          textAnchor="middle"
-          fill="#666"
-        >
-          {payload.value}
-        </text>
-      </g>
-    );
-  };
+
 
   return (
     <>
@@ -97,31 +64,10 @@ function FollowersTimeLine(props) {
               />
               <Tooltip />
               <Line
-                name="Twitter"
+                name="Perfil"
                 type="monotone"
-                dataKey="followers_tw"
+                dataKey="followers"
                 stroke="#00acee"
-                strokeWidth={3}
-              />
-              <Line
-                name="Facebook"
-                type="monotone"
-                dataKey="followers_fb"
-                stroke="#3b5998"
-                strokeWidth={3}
-              />
-              <Line
-                name="Youtube"
-                type="monotone"
-                dataKey="followers_yt"
-                stroke="#c4302b"
-                strokeWidth={3}
-              />
-              <Line
-                name="Instagram"
-                type="monotone"
-                dataKey="followers_in"
-                stroke="#E1306C"
                 strokeWidth={3}
               />
             </LineChart>
@@ -131,5 +77,8 @@ function FollowersTimeLine(props) {
     </>
   );
 }
+
+
+
 
 export default FollowersTimeLine;

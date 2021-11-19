@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+
+import BdmApi from "../api/Bdm";
+
 import WordCloud from "react-d3-cloud";
 
 const fontSize = (word) => word.value / 10;
@@ -8,11 +10,19 @@ const rotate = (word) => 0;
 function WordsCloud(props) {
   const [chartData, setChartData] = useState([]);
 
+  const { clientId, profileId } = props
+
   useEffect(() => {
-    Axios.get("assets/word-cloud.json").then((response) => {
+    async function loadChartData() {
+
+      const response = await BdmApi.getWordCloudWords(clientId, profileId);
+
       setChartData(renameData(response.data));
-    });
-  }, []);
+
+    }
+
+    loadChartData();
+  }, [clientId, profileId]);
 
   function renameData(data) {
     data = data.map((item) => ({

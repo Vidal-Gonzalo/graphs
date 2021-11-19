@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
-import moment from "moment";
+
+import BdmApi from "../api/Bdm";
+
+import { GroupDataByDate } from "../helpers/GroupDataByDate";
+
+import { CustomizedAxisTick } from "../helpers/CustomizedAxisTick";
+
 import {
   PieChart,
   Pie,
@@ -17,94 +22,28 @@ import {
 
 function CommentsAndShares(props) {
 
-  //LineChart
-
-  const { since_str, until_str, interval } = props;
-  const current = moment(since_str);
-  const until = moment(until_str);
+  const { clientId, profileId, since_str, until_str, interval } = props;
 
   const [chartData, setChartData] = useState([]);
+
   const [pieData, setPieData] = useState([{ "interaction": "Me gusta", "value": 1 }, { "interaction": "Compartidos", "value": 1 }, { "interaction": "Comentarios", "value": 1 }])
 
   useEffect(() => {
-    //Helper
-    function adapterFunction(data) {
-      const step = interval === "hour" ? "hours" : "days";
-      const result = [];
-      data = data.map((d) => {
-        d.date = moment(d.date);
-        return d;
-      });
-      while (current <= until) {
-        let dataItem = data.filter((i) => current.isSame(i.date));
-        result.push(
-          dataItem.length > 0
-            ? dataItem[0]
-            : { date: current.clone(), count: null }
-        );
-        current.add(1, step);
-      }
-      return result.map((i) => {
-        if (step === "days") {
-          i.date = i.date.format("YYYY-MM-DD");
-        } else {
-          i.date = i.date.format("DD-hh:mm");
-        }
-        return i;
-      });
+
+    async function loadChartData() {
+
+      const response = await BdmApi.getCommentsAndShares(clientId, profileId, since_str, until_str, interval);
+  
+      const groupedData = GroupDataByDate(since_str, until_str, interval, response.data);
+  
+      setChartData(groupedData);
+  
     }
 
+    loadChartData();
 
-    //Fetching data
-    Axios.get("assets/comments-and-shares.json").then((response) => {
-      setChartData(adapterFunction(response.data));
-    })
-  }, []);
+  }, [clientId, profileId, since_str, until_str, interval]);
 
-
-
-
-
-  // PieChart //
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    let x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    console.log("este es x" + x + " y este es y" + y);
-    if(x < 500){
-      x += 15
-    }
-    return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {(percent * 100) === 0 ? null : `${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
-
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      if (payload[0].payload.interaction === "No hubo interacción") {
-        return (
-          <div className="custom-tooltip">
-            <p className="intro">{payload[0].payload.interaction}</p>
-          </div>
-        )
-      }
-      return (
-        <div className="custom-tooltip">
-          <p className="intro">{payload[0].payload.interaction}</p>
-          <p className="desc">
-            Ha habido un total de {payload[0].value} interacciones
-          </p>
-        </div>
-      );
-    }
-
-    return null;
-  };
 
   //Customize pie data
   function CustomMouseHover(payload) {
@@ -134,25 +73,6 @@ function CommentsAndShares(props) {
     setPieData(data);
   }
 
-
-  //Customized content
-  const CustomizedAxisTick = (props) => {
-    const { x, y, payload } = props;
-    return (
-      <g transform={`translate(${x},${y})`}>
-        <text
-          x={0}
-          y={0}
-          dy={16}
-          className="timeLineLabels"
-          textAnchor="middle"
-          fill="#666"
-        >
-          {payload.value}
-        </text>
-      </g>
-    );
-  };
 
   return (
     <>
@@ -226,5 +146,47 @@ function CommentsAndShares(props) {
     </>
   );
 }
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    if (payload[0].payload.interaction === "No hubo interacción") {
+      return (
+        <div className="custom-tooltip">
+          <p className="intro">{payload[0].payload.interaction}</p>
+        </div>
+      )
+    }
+    return (
+      <div className="custom-tooltip">
+        <p className="intro">{payload[0].payload.interaction}</p>
+        <p className="desc">
+          Ha habido un total de {payload[0].value} interacciones
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+  // PieChart //
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    let x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    console.log("este es x" + x + " y este es y" + y);
+    if(x < 500){
+      x += 15
+    }
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        {(percent * 100) === 0 ? null : `${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
 
 export default CommentsAndShares;

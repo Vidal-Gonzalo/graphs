@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+
+import BdmApi from "../api/Bdm";
+
 import {
   BarChart,
   Bar,
@@ -10,6 +12,59 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+
+
+function CommentsPerDay(props) {
+  const [chartData, setChartData] = useState([]);
+
+  const { clientId, profileId } = props
+
+  useEffect(() => {
+
+    async function loadChartData() {
+
+      const response = await BdmApi.getCommentsPerDay(clientId, profileId);
+
+      setChartData(response.data);
+
+    }
+
+    loadChartData();
+  }, [clientId, profileId]);
+
+
+  return (
+    <>
+      <div className="row">
+        <div className="description">
+          <h3>{props.title}</h3>
+          <p>{props.description}</p>
+        </div>
+        <div className="wrap-chart">
+          <ResponsiveContainer width="99%" aspect={3}>
+            <BarChart width={150} height={40} data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <Bar dataKey="count" barSize={30}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill="#BDB2FF" />
+                ))}
+              </Bar>
+              <Bar dataKey="shares" barSize={30}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill="#FFC6FF" />
+                ))}
+              </Bar>
+              <YAxis />
+              <XAxis datakey="comment_weekday" tick={<CustomizedAxisTick />} />
+              <Tooltip cursor={false} content={<CustomTooltip />} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    </>
+  );
+}
 
 const barLabels = [
   "Lunes",
@@ -86,46 +141,5 @@ const CustomTooltip = ({ active, payload, label }) => {
 
   return null;
 };
-
-function CommentsPerDay(props) {
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    Axios.get("assets/comments-p-day.json").then((response) => {
-      setChartData(response.data);
-    });
-  }, []);
-
-  return (
-    <>
-      <div className="row">
-        <div className="description">
-          <h3>{props.title}</h3>
-          <p>{props.description}</p>
-        </div>
-        <div className="wrap-chart">
-          <ResponsiveContainer width="99%" aspect={3}>
-            <BarChart width={150} height={40} data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <Bar dataKey="count" barSize={30}>
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill="#BDB2FF" />
-                ))}
-              </Bar>
-              <Bar dataKey="shares" barSize={30}>
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill="#FFC6FF" />
-                ))}
-              </Bar>
-              <YAxis />
-              <XAxis datakey="comment_weekday" tick={<CustomizedAxisTick />} />
-              <Tooltip cursor={false} content={<CustomTooltip />} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-    </>
-  );
-}
 
 export default CommentsPerDay;
