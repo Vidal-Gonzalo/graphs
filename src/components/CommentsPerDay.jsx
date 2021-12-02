@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { CustomizedAxisTickBarChart } from "../helpers/CustomizedAxisTickBarChart";
+
 import BdmApi from "../api/Bdm";
 
 import {
@@ -56,7 +58,7 @@ function CommentsPerDay(props) {
                 ))}
               </Bar>
               <YAxis />
-              <XAxis datakey="comment_weekday" tick={<CustomizedAxisTick />} />
+              <XAxis datakey="comment_weekday" tick={<CustomizedAxisTickBarChart />} />
               <Tooltip cursor={false} content={<CustomTooltip />} />
             </BarChart>
           </ResponsiveContainer>
@@ -66,60 +68,32 @@ function CommentsPerDay(props) {
   );
 }
 
-const barLabels = [
-  "Lunes",
-  "Martes",
-  "Miércoles",
-  "Jueves",
-  "Viernes",
-  "Sábado",
-  "Domingo",
-];
-
-const getIntroOfPage = (label) => {
-  if (label === 0) {
-    return "Lunes";
-  }
-  if (label === 1) {
-    return "Martes";
-  }
-  if (label === 2) {
-    return "Miércoles";
-  }
-  if (label === 3) {
-    return "Jueves";
-  }
-  if (label === 4) {
-    return "Viernes";
-  }
-  if (label === 5) {
-    return "Sábado";
-  }
-  if (label === 6) {
-    return "Domingo";
-  }
-  return "";
-};
-
-const CustomizedAxisTick = (props) => {
-  const { x, y, payload } = props;
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor="middle"
-        className="labels"
-        fill="#666"
-      >
-        {barLabels[payload.index]}
-      </text>
-    </g>
-  );
-};
 
 const CustomTooltip = ({ active, payload, label }) => {
+  const getIntroOfPage = (label) => {
+    if (label === 0) {
+      return "Lunes";
+    }
+    if (label === 1) {
+      return "Martes";
+    }
+    if (label === 2) {
+      return "Miércoles";
+    }
+    if (label === 3) {
+      return "Jueves";
+    }
+    if (label === 4) {
+      return "Viernes";
+    }
+    if (label === 5) {
+      return "Sábado";
+    }
+    if (label === 6) {
+      return "Domingo";
+    }
+    return "";
+  };
   if (active && payload && payload.length) {
     payload[0].color = "#BDB2FF";
     payload[1].color = "#FFC6FF";

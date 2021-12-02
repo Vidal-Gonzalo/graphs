@@ -13,7 +13,8 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    ResponsiveContainer
+    ResponsiveContainer,
+    Legend
 } from 'recharts';
 
 function CommentsClasificationTimeLine(props) {
@@ -56,7 +57,8 @@ function CommentsClasificationTimeLine(props) {
                             <XAxis dataKey="date" interval="preserveStartEnd" tick={<CustomizedAxisTick />} />
                             <YAxis />
                             <Tooltip content={<CustomTooltip/>}/>
-                            <Area type="monotone" dataKey="count" stroke="#8884d8" stackId="1" fill="#8884d8" />
+                            <Area name="Perfil" type="monotone" dataKey="count" stroke="#8884d8" stackId="1" fill="#8884d8" />
+                            <Legend/>
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
@@ -73,7 +75,7 @@ const CustomTooltip = ({ active, payload, label }) => {
         <div className="custom-tooltip">
           <p className="desc">
               <span style={{color: payload[0].fill}}>
-                  {(payload[0].dataKey)} : {payload[0].value}
+                  {(payload[0].name)} : {payload[0].value}
               </span>
           </p>
         </div>

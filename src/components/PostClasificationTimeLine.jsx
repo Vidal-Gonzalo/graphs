@@ -4,10 +4,6 @@ import BdmApi from '../api/Bdm';
 
 import { GroupDataByDate } from '../helpers/GroupDataByDate';
 
-// import { GetDataKey } from '../helpers/GetDataKey';
-
-// import { GetTag } from '../helpers/GetTag';
-
 import { CustomizedAxisTick } from '../helpers/CustomizedAxisTick';
 
 import {
@@ -33,7 +29,7 @@ function PostClasificationTimeLine(props) {
 
             const groupedData = GroupDataByDate(since_str, until_str, interval, response.data);
 
-            setChartData(groupedData); //Acá utilizaría el GetDataKey para modificar el array de objetos
+            setChartData(groupedData); 
             
         }
 
@@ -41,7 +37,7 @@ function PostClasificationTimeLine(props) {
 
     }, [clientId, profileId, since_str, until_str, interval]);
 
-    // let tag = GetTag(chartData)
+   
 
     return (
         <>
@@ -63,7 +59,7 @@ function PostClasificationTimeLine(props) {
                             <YAxis />
                             <Tooltip />
 
-                            <Line type="monotone" stackId={1} dataKey="count" fill="#FFC6FF" />
+                            <Line name="Clasificación" type="monotone" stackId={1} dataKey="count" fill="#FFC6FF" />
 
                         </LineChart>
                     </ResponsiveContainer>

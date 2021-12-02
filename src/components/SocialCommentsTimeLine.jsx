@@ -64,7 +64,7 @@ function SocialCommentsTimeLine(props) {
                             />
                             <Tooltip />
                             <Line
-                                name="Profile"
+                                name="Perfil"
                                 type="step"
                                 dataKey="count"
                                 stroke="#00acee"

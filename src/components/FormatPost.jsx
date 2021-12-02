@@ -143,10 +143,9 @@ const RenderLegend = ({ payload }) => {
         <li
           key={`item-${index}`}
           style={{
-            color: entry.payload.fill,
-            fontSize: "22px",
-            fontWeight: "bold",
+            color: entry.payload.fill
           }}
+          className="format-legend"
         >
           {customLabel(entry.payload.type)}
         </li>

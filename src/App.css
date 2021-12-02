@@ -107,3 +107,10 @@
   margin-top: 5px;
 }
 
+
+@media (min-width: 320px) and (max-width: 900px){
+  .format-legend {
+    font-size: 13px;
+    margin-left: 80px;
+  }
+}

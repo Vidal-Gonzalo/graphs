@@ -50,7 +50,7 @@ function CommentsClasificationBarchart(props) {
               </Bar>
               <YAxis type="category" datakey="tag" />
               <XAxis type="number" />
-              <Tooltip cursor={false} />
+              <Tooltip cursor={false} content={<CustomTooltip/>} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -59,5 +59,19 @@ function CommentsClasificationBarchart(props) {
   );
 }
 
+const CustomTooltip = ({ active, payload, label }) => {
+
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="desc">
+          Han habido <strong>{payload[0].value}</strong> comentarios
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+};
 
 export default CommentsClasificationBarchart

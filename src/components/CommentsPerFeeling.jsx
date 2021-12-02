@@ -60,25 +60,12 @@ function SentimentPerComment(props) {
 }
 
 const barColors = ["#60D394", "#FFD97D", "#EE6055"];
-const barLabels = ["Positivo", "Neutro", "Negativo"];
-
-const getIntroOfPage = (label) => {
-  if (label === 0) {
-    return "Positivo";
-  }
-  if (label === 1) {
-    return "Neutral";
-  }
-  if (label === 2) {
-    return "Negativo";
-  }
-
-  return "";
-};
 
 const CustomizedAxisTick = (props) => {
   const { x, y, payload } = props;
 
+  const barLabels = ["Positivo", "Neutro", "Negativo"];
+  
   return (
     <g transform={`translate(${x},${y})`}>
       <text
@@ -96,6 +83,19 @@ const CustomizedAxisTick = (props) => {
 };
 
 const CustomTooltip = ({ active, payload, label }) => {
+  const getIntroOfPage = (label) => {
+    if (label === 0) {
+      return "Positivo";
+    }
+    if (label === 1) {
+      return "Neutral";
+    }
+    if (label === 2) {
+      return "Negativo";
+    }
+  
+    return "";
+  };
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip">
